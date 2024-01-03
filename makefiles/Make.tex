@@ -1,0 +1,66 @@
+# -*- makefile -*-
+################################################################
+####
+#### This makefile is part of `Parallel Programming in MPI and OpenMP'
+#### Victor Eijkhout
+#### eijkhout@tacc.utexas.edu
+####
+#### copyright Victor Eijkhout 2012-2023
+####
+#### Make include file with TeX/LaTeX formatting rules
+####
+################################################################
+
+MAKEFLAGS += --no-builtin-rules
+
+info ::
+	@echo
+	@echo "================ LaTeX"
+
+.PHONY: onepass onepassformat
+onepass ::
+	@export file=$$( make --no-print-directory filename COURSE="${COURSE}" FILE="${FILE}" ) \
+	 && make --no-print-directory onepassformat FORMAT="${FORMAT}" FILE=$$file
+onepassformat :
+	@if [ $$( which $$( echo ${LATEXENGINE} | awk '{ print $$1 }' ) >/dev/null 2>&1 ; echo $$? ) -ne 0 ] ; then \
+	    echo && echo "Can not invoke LATEXENGINE=${LATEXENGINE}. Maybe load a module?" && echo \
+	    && exit 1 \
+	    ; fi
+	@echo && echo "One pass over file: ${FILE}" && echo \
+	 && TEXINPUTS=${LOCALTEXINPUTS}:${TEXINPUTS} ${LATEXENGINE} \
+	        $$( if [ ! -z "${FORMAT}" ] ; then echo \&${FORMAT} ; fi ) \
+	        ${FILE}
+
+.PHONY: filename
+filename :
+	@if [ ! -z "${COURSE}" ] ; then \
+	    export file=${COURSE}_course \
+	; elif [ ! -z "${FILE}" ] ; then \
+	    export file=${FILE} \
+	; else \
+	    echo "Please set FILE or COURSE" >2 && exit 1 \
+	; fi \
+	 && echo $$file
+
+info ::
+	@echo "make diagnostics [FILE=...(default: ${FILE})]] : formatting problems"
+.PHONY: diagnostics
+diagnostics ::
+	@if [ -z "${FILE}" ] ; then \
+	    echo "Please specify FILE variable" && exit 1 \
+	    ; fi \
+	 && echo "================ Diagnostics ================" \
+	 && ( grep multiply ${FILE}.log | grep -v header \
+	        || echo >/dev/null ) \
+	 && ( grep "missing snippet" ${FILE}.log \
+	        || echo >/dev/null ) \
+	 && ( grep "Missing output" ${FILE}.log \
+	        || echo >/dev/null ) \
+	 && echo "----------------" \
+	 && ( grep "LaTeX Warning: Citation" ${FILE}.log ) \
+	        || echo 0 >/dev/null \
+	 && ( grep "LaTeX Warning: Reference" ${FILE}.log | grep -v def: ) \
+	        || echo 0 >/dev/null \
+	 && echo "----------------" \
+	 && ( grep "is not defined on" ${FILE}.log || echo >/dev/null ) \
+	 && echo "---------------- end of diagnostics --------"
