@@ -18,17 +18,15 @@ using std::pair,std::make_pair,std::tuple,std::make_tuple;
 #include <vector>
 using std::vector;
 
+#include <iostream>
+using std::cout;
+#include <format>
+using std::format;
+
 #include <ranges>
-//#include <range/v3/all.hpp>
-#ifdef RANGES_V3_ALL_HPP
-namespace rng = ranges;
-#else
 namespace rng = std::ranges;
-#endif
 
 #include "distalg.hpp"
-#include <fmt/format.h>
-using fmt::print;
 
 #include <memory>
 using std::shared_ptr,std::make_shared;
@@ -57,12 +55,12 @@ namespace linalg {
     if (rank==0 and trace) {
       rng::for_each( proc_start_m,
 		     [init=true] ( auto p ) mutable {
-		       if (init) { init=false; fmt::print("pm: {}",p); } 
-		       else fmt::print(", {}",p); } ); fmt::print("\n");
+		       if (init) { init=false; cout << format("pm: {}",p); } 
+		       else cout << format(", {}",p); } ); cout << format("\n");
       rng::for_each( proc_start_n,
 		     [init=true] ( auto p ) mutable {
-		       if (init) { init=false; fmt::print("pn: {}",p); } 
-		       else fmt::print(", {}",p); } ); fmt::print("\n");
+		       if (init) { init=false; cout << format("pn: {}",p); } 
+		       else cout << format(", {}",p); } ); cout << format("\n");
     }
     /*
      * This process in particular
@@ -72,7 +70,6 @@ namespace linalg {
     auto
       sm = proc_start_m[pm+1]-proc_start_m[pm],
       sn = proc_start_n[pn+1]-proc_start_n[pn];
-    //    fmt::print("[{}] local: {}x{}\n",rank,sm,sn);
     data = bordered_array<real>(sm,sn);
     set_neighbors(trace);
   };
@@ -108,13 +105,13 @@ namespace linalg {
                      return (v<0 ? MPI_PROC_NULL : v); }();
     //codesnippet end
     if (trace) { 
-      print("[{}] ",comm.rank());
+      cout << format("[{}] ",comm.rank());
       for_each ( neighbors.begin(),neighbors.end(),
                  [init=true] ( auto n ) mutable {
-                   if (init) init=false; else print(", ");
-                   auto [d,r] = n; print("{}={}",d,r);
+                   if (init) init=false; else cout << format(", ");
+                   auto [d,r] = n; cout << format("{}={}",d,r);
                  } );
-      print("\n"); }
+      cout << format("\n"); }
   };
 
   //! Derive pointer and layout for the halo, given the source direction

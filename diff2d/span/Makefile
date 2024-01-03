@@ -3,7 +3,7 @@
 ####
 #### This makefile is part of the source of 
 #### "Parallel Computing for Science and Engineering"
-#### by Victor Eijkhout, copyright 2013-2023
+#### by Victor Eijkhout, copyright 2013-2024
 ####
 #### makefile for diff2d in OpenMP/C++ using spans
 ####
@@ -29,7 +29,7 @@ RANGE = 0
 MODE = omp
 LANGUAGE = CXX
 CATEGORY = span
-MODULES = cxxopts fmtlib mdspan 
+MODULES = cxxopts mdspan 
 
 ##
 ## dependencies
@@ -49,11 +49,7 @@ else
 endif
 EXTRA_INCLUDES := \
     -I${TACC_MDSPAN_INC} \
-    $$( pkg-config --cflags cxxopts ) \
-    $$( pkg-config --cflags fmt )
-EXTRA_LIBS = \
-    $$( pkg-config --libs fmt )
-RPATH = ${TACC_FMTLIB_LIB}
+    $$( pkg-config --cflags cxxopts ) 
 
 ##
 ## profiling

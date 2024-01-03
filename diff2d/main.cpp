@@ -2,7 +2,7 @@
  ****
  **** This file belongs with the course
  **** Parallel Programming in MPI and OpenMP
- **** copyright 2019-2023 Victor Eijkhout eijkhout@tacc.utexas.edu
+ **** copyright 2019-2024 Victor Eijkhout eijkhout@tacc.utexas.edu
  ****
  **** main.cpp : general main for diff2d codes
  ****
@@ -14,7 +14,7 @@ if (view)
 
 auto xnorm = X.l2norm();
 if ( trace and procno==0 )
-  print("x norm: {}\n",xnorm);
+  cout << format("x norm: {}\n",xnorm);
 
 using myclock = std::chrono::steady_clock;
 auto start_time = myclock::now();
@@ -33,7 +33,7 @@ for ( int it=0; it<itcount; it++ ) {
   auto bnorm = Y.l2norm();
   bw += 2.*msize*nsize; fl += msize*nsize; //snippetskip
   if ( trace and procno==0 )
-    print("[{:>2}] y norm: {}\n",it,bnorm);
+    cout << format("[{:>2}] y norm: {}\n",it,bnorm);
   // scale
   X.scale_interior( Y,1./bnorm );
   bw += 1.*msize*nsize; fl += msize*nsize; //snippetskip
@@ -50,18 +50,14 @@ auto millisec_duration =
   std::chrono::duration_cast<std::chrono::microseconds>(duration)/1000;
 auto msec = millisec_duration.count();
 if ( procno==0 )
-  print("Time: {:>6} msec\n",msec);
+  cout << format("Time: {:>6} msec\n",msec);
 
 /*
  * Other stats
  */
 if ( procno==0 )
-  print("{}-BW: (estimated) {:7.3}\n",
+  cout << format("{}-BW: (estimated) {:7.3}\n",
 	prefix,bw/(msec/1.e3)*1.e-9);
 if ( procno==0 )
-  print("{}-Flops: {:7.3}\n",
+  cout << format("{}-Flops: {:7.3}\n",
 	prefix,fl/(msec/1.e3)*1.e-9);
-
-// auto [f,b] = X.log_report();
-// if ( procno==0 )
-//   print("Gflop rate: {:5.2}, Gbyte rate: {:5.2}\n",f,b);

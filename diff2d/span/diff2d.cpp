@@ -2,7 +2,7 @@
  ****
  **** This file belongs with the course
  **** Parallel Programming in MPI and OpenMP
- **** copyright 2019-2023 Victor Eijkhout eijkhout@tacc.utexas.edu
+ **** copyright 2019-2024 Victor Eijkhout eijkhout@tacc.utexas.edu
  ****
  **** diff2d.cpp : 2D diffusion in parallel through OpenMP
  ****
@@ -11,18 +11,18 @@
 #define USE_OMP
 
 #include <chrono>
-#include <iostream>
-using std::cin;
-using std::cout;
 
 #include <algorithm>
 using std::for_each;
 
 #include <cassert>
 
+#include <iostream>
+using std::cout;
+#include <format>
+using std::format;
+
 #include "cxxopts.hpp"
-#include "fmt/format.h"
-using fmt::print;
 
 #include "omp.h"
 #include "../linalg.hpp"
@@ -49,9 +49,9 @@ int main(int argc,char **argv) {
     return nt; }();
   const std::string prefix{"span"};
 
-  print("Threads: {:>3}\n",nthreads);
+  cout << format("Threads: {:>3}\n",nthreads);
   if (trace)
-    print("Vector size: {} x {}\n",msize,nsize);
+    cout << format("Vector size: {} x {}\n",msize,nsize);
   linalg::bordered_array<real> X(msize,nsize,border),Y(msize,nsize,border);
   X.set_collapse(collapse); Y.set_collapse(collapse);
 

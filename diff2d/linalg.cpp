@@ -2,7 +2,7 @@
  ****
  **** This file belongs with the course
  **** Parallel Programming in MPI and OpenMP
- **** copyright 2019-2023 Victor Eijkhout eijkhout@tacc.utexas.edu
+ **** copyright 2019-2024 Victor Eijkhout eijkhout@tacc.utexas.edu
  ****
  **** linalg.cpp : bordered vector routines
  ****
@@ -12,8 +12,10 @@
 #include <string>
 using std::string;
 
-#include <fmt/format.h>
-using fmt::print;
+#include <iostream>
+using std::cout;
+#include <format>
+using std::format;
 
 #include "linalg.hpp"
 
@@ -141,16 +143,16 @@ namespace linalg {
   template< typename real >
   void bordered_array<real>::view( string caption ) {
     if (caption!="")
-      print("{}:\n",caption);
+      cout << format("{}:\n",caption);
     for_each
       ( domain().begin(),domain().end(),
         [n=this->_n,array = data2d(),border=this->border] ( auto idx ) {
           auto [i,j] = idx;
           char c = ( j<n+2*border-1 ? ' ' : '\n' );
-          print("{:5.2}{}",array[i,j],c);
+          cout << format("{:5.2}{}",array[i,j],c);
         }
         );
-    print("\n");
+    cout << format("\n");
   };
 
   //! Copy internal data into a new vector

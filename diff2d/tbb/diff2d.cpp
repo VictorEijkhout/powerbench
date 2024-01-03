@@ -2,7 +2,7 @@
  ****
  **** This file belongs with the course
  **** Parallel Programming in MPI and OpenMP
- **** copyright 2019-2023 Victor Eijkhout eijkhout@tacc.utexas.edu
+ **** copyright 2019-2024 Victor Eijkhout eijkhout@tacc.utexas.edu
  ****
  **** diff2d.cpp : 2D diffision in parallel through policies
  ****
@@ -26,6 +26,11 @@ using std::vector;
 
 #include <cassert>
 
+#include <iostream>
+using std::cout;
+#include <format>
+using std::format;
+
 //#include <ranges>
 #include <range/v3/all.hpp>
 #ifdef RANGES_V3_ALL_HPP
@@ -46,8 +51,6 @@ namespace mdx = KokkosEx;
 
 #include "cxxopts.hpp"
 #include "../linalg.cpp"
-#include "fmt/format.h"
-using fmt::print;
 
 using real = float;
 
@@ -67,7 +70,7 @@ int main(int argc,char **argv) {
   }
 
   if (trace)
-    print("Vector size: {} x {}\n",msize,nsize);
+    cout << format("Vector size: {} x {}\n",msize,nsize);
   linalg::bordered_array<real> X(msize,nsize),Y(msize,nsize);
 
 #include "../main.cpp"

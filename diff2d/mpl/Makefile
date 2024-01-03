@@ -22,7 +22,7 @@ WRONGS =
 MODE = mpl
 LANGUAGE = CXX
 CATEGORY = mpl
-MODULES = cxxopts fmtlib mdspan rangev3 mpl
+MODULES = cxxopts mdspan mpl
 .SECONDEXPANSION:
 EXTRA_OBJS = distalg.o linalg.o
 include ../../makefiles/Make.compile
@@ -31,11 +31,8 @@ ifeq "${TACC_FAMILY_COMPILER}" "intel"
 else
   CPPSTANDARD = 23
 endif
-EXTRA_INCLUDES = -I${TACC_MDSPAN_INC} -I${TACC_RANGEV3_INC} \
-    $$( pkg-config --cflags fmt ) \
+EXTRA_INCLUDES = -I${TACC_MDSPAN_INC} \
     $$( pkg-config --cflags cxxopts )
-EXTRA_LIBS = \
-    $$( pkg-config --libs fmt )
 
 ##
 ## get the sequential basic routines

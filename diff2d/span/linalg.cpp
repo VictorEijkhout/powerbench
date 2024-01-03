@@ -2,7 +2,7 @@
  ****
  **** This file belongs with the course
  **** Parallel Programming in MPI and OpenMP
- **** copyright 2019-2023 Victor Eijkhout eijkhout@tacc.utexas.edu
+ **** copyright 2019-2024 Victor Eijkhout eijkhout@tacc.utexas.edu
  ****
  **** linalg.cpp : bordered vector routines for omp
  ****    using mdspan but 1D -> 2D index conversion
@@ -15,8 +15,10 @@ using std::for_each;
 #include <string>
 using std::string;
 
-#include <fmt/format.h>
-using fmt::print;
+#include <iostream>
+using std::cout;
+#include <format>
+using std::format;
 
 #define HAVE_SPAN
 #include "../linalg.hpp"
@@ -116,12 +118,12 @@ namespace linalg {
   template< typename real >
   void bordered_array<real>::view( string caption ) {
     if (caption!="")
-      print("{}:\n",caption);
+      cout << format("{}:\n",caption);
     auto out = this->data2d();
     for ( auto ij : rng::views::iota(static_cast<size_t>(0),this->domain_size()) ) {
       auto [i,j] = split_i_j(ij);
       char c = ( j<_n+2*border-1 ? ' ' : '\n' );
-      print("{:5.2}{}",out[i,j],c);
+      cout << format("{:5.2}{}",out[i,j],c);
     }
   };
 };

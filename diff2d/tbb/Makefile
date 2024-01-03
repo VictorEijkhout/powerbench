@@ -3,7 +3,7 @@
 ####
 #### This makefile is part of the source of 
 #### "Parallel Computing for Science and Engineering"
-#### by Victor Eijkhout, copyright 2013-2023
+#### by Victor Eijkhout, copyright 2013-2024
 ####
 #### makefile for TBB version of dff2d
 ####
@@ -22,14 +22,12 @@ WRONGS =
 MODE = tbb
 LANGUAGE = CXX
 CATEGORY  = tbb
-MODULES = cxxopts fmtlib mdspan rangev3
+MODULES = cxxopts mdspan rangev3
 include ../../makefiles/Make.compile
 CPPSTANDARD = 23
 EXTRA_INCLUDES = -I${TACC_CXXOPTS_INC} -I${TACC_MDSPAN_INC} -I${TACC_RANGEV3_INC} \
-    $$( pkg-config --cflags fmt) \
     $$( pkg-config --cflags tbb)
 EXTRA_LIBS = \
-    $$( pkg-config --libs fmt ) \
     $$( pkg-config --libs tbb )
 
 diff2d.o : ../main.cpp ../options.cpp ../linalg.hpp ../linalg.cpp

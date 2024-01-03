@@ -11,9 +11,6 @@
 #define USE_MPI
 
 #include <chrono>
-#include <iostream>
-using std::cin;
-using std::cout;
 #include <map>
 using std::map;
 #include <cassert>
@@ -22,8 +19,11 @@ using real = float;
 #include "cxxopts.hpp"
 #include "./distalg.hpp"
 
-#include <fmt/format.h>
-using fmt::print;
+#include <iostream>
+using std::cout;
+#include <format>
+using std::format;
+
 #include <mpl/mpl.hpp>
 
 int main(int argc,char **argv) {
@@ -52,17 +52,17 @@ int main(int argc,char **argv) {
   }
 
   if ( trace and procno==0 )
-    print("Number of processes: {}\n",nprocs);
+    cout << format("Number of processes: {}\n",nprocs);
   //codesnippet d2ddimscreate
   mpl::cartesian_communicator::dimensions brick(2);
   brick = mpl::dims_create(nprocs,brick);
   mpl::cartesian_communicator cart_comm( comm_world,brick );
   //codesnippet end
   if ( trace and procno==0 )
-    print("Process grid: {}x{}\n",brick.size(0),brick.size(1));
+    cout << format("Process grid: {}x{}\n",brick.size(0),brick.size(1));
 
   if ( trace and procno==0 )
-    print("Setting up domain of {} x {}\n",msize,nsize);
+    cout << format("Setting up domain of {} x {}\n",msize,nsize);
   linalg::distributed_array<real>
     X(cart_comm,msize,nsize,trace), Y(cart_comm,msize,nsize);
 

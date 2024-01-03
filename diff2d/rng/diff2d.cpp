@@ -2,25 +2,25 @@
  ****
  **** This file belongs with the course
  **** Parallel Programming in MPI and OpenMP
- **** copyright 2019-2023 Victor Eijkhout eijkhout@tacc.utexas.edu
+ **** copyright 2019-2024 Victor Eijkhout eijkhout@tacc.utexas.edu
  ****
  **** diff2d.cpp : 2D diffusion in parallel using ranges, whatever that means
  ****
  ****************************************************************/
 
 #include <chrono>
-#include <iostream>
-using std::cin;
-using std::cout;
 
 #include <algorithm>
 using std::for_each;
 
 #include <cassert>
 
+#include <iostream>
+using std::cout;
+#include <format>
+using std::format;
+
 #include "cxxopts.hpp"
-#include "fmt/format.h"
-using fmt::print;
 
 #define HAVE_SPAN
 #include "../linalg.hpp"
@@ -40,7 +40,7 @@ int main(int argc,char **argv) {
   }
 
   if (trace)
-    print("Vector size: {} x {}\n",msize,nsize);
+    cout << format("Vector size: {} x {}\n",msize,nsize);
   linalg::bordered_array<real> X(msize,nsize),Y(msize,nsize);
 #include "../main.cpp"
 
